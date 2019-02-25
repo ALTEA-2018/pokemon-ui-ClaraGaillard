@@ -1,4 +1,4 @@
-package com.miage.altea.tp.controller;
+package com.miage.altea.tp.pokemon_ui.controller;
 
 import com.miage.altea.tp.pokemon_ui.controller.IndexController;
 import org.junit.jupiter.api.Test;
