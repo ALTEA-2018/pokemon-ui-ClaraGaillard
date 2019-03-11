@@ -32,4 +32,13 @@ public class PokemonTypeController {
     public void setPokemonTypeService(PokemonTypeService pokeTypeServ) {
         this.pokemonTypeService = pokeTypeServ;
     }
+
+    @GetMapping(value="/listTrainers")
+    public ModelAndView listTrainers(){
+        ModelAndView model = new ModelAndView();
+        /*List<Trainer> listTrainer = pokemonTypeService.listPokemonsTypes();
+        model.setViewName("listTrainers");
+        model.addObject("trainers", listTrainer);*/
+        return model;
+    }
 }
