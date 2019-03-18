@@ -3,6 +3,16 @@
         <div class="container">
             <div class="card-deck">
                 {{#trainers}}
+                <div class="col-md-3">
+                    <div class="card shadow-sm mb-3">
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal">{{name}} <!--2--></h4>
+                        </div>
+                        <div class="card-body">
+                            <span class="badge badge-primary">{{team.name}}</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </body>

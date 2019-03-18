@@ -4,8 +4,10 @@ import com.miage.altea.tp.pokemon_ui.config.RestConfiguration;
 import com.miage.altea.tp.pokemon_ui.pokemonTypes.bo.PokemonType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpEntity;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,7 +25,7 @@ public class PokemonTypeServiceImpl implements PokemonTypeService {
 
     String pokemonServiceUrl;
 
-    String base_url = "/pokemon-types/";
+    String base_url = "pokemon-types/";
 
     RestTemplate rT;
 
@@ -48,5 +50,17 @@ public class PokemonTypeServiceImpl implements PokemonTypeService {
     @Value("${pokemonType.service.url}")
     public void setPokemonTypeServiceUrl(String pokemonServiceUrl) {
         this.pokemonServiceUrl= pokemonServiceUrl;
+    }
+
+    @Cacheable("pokemon-types")
+    @Retryable
+    @Override
+    public PokemonType getPokemonType(int id) {
+        var headers = new HttpHeaders();
+        headers.setAcceptLanguageAsLocales(List.of(LocaleContextHolder.getLocale()));
+        var httpRequest = new HttpEntity<>(headers);
+        PokemonType pokemonType;
+        pokemonType = rT.getForObject(this.pokemonServiceUrl+"/pokemon-types/{id}", PokemonType.class, id);
+        return pokemonType;
     }
 }
