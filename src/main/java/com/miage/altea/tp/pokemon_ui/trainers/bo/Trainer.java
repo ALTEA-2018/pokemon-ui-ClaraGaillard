@@ -1,10 +1,14 @@
-package com.miage.altea.tp.pokemon_ui.pokemonTypes.bo;
+package com.miage.altea.tp.pokemon_ui.trainers.bo;
+
+import com.miage.altea.tp.pokemon_ui.pokemonTypes.bo.Pokemon;
 
 import java.util.List;
 
 public class Trainer {
 
     private String name;
+
+    private String password;
 
     private List<Pokemon> team;
 
@@ -30,4 +34,14 @@ public class Trainer {
     public void setTeam(List<Pokemon> team) {
         this.team = team;
     }
+
+    public String getPassword() {
+        System.out.println(this.password);
+        return this.password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 }
