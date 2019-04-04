@@ -2,19 +2,20 @@ package com.miage.altea.tp.pokemon_ui.pokemonTypes.service;
 
 import com.miage.altea.tp.pokemon_ui.config.RestConfiguration;
 import com.miage.altea.tp.pokemon_ui.pokemonTypes.bo.PokemonType;
+import com.miage.altea.tp.pokemon_ui.trainers.bo.Pokemon;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpEntity;
-import org.springframework.retry.annotation.Retryable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import org.springframework.http.HttpHeaders;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 @Service
 public class PokemonTypeServiceImpl implements PokemonTypeService {
@@ -23,13 +24,16 @@ public class PokemonTypeServiceImpl implements PokemonTypeService {
     }
 
 
+    @Value("${pokemonType.service.url}")
     String pokemonServiceUrl;
 
-    String base_url = "pokemon-types/";
+    String base_url = "/pokemon-types/";
 
     RestTemplate rT;
 
     @Override
+    @Cacheable(value = "pokemon-types")
+    @HystrixCommand(fallbackMethod = "getVoidListPokemons")
     public List<PokemonType> listPokemonsTypes() {
         var headers = new HttpHeaders();
         headers.setAcceptLanguageAsLocales(List.of(LocaleContextHolder.getLocale()));
@@ -53,14 +57,26 @@ public class PokemonTypeServiceImpl implements PokemonTypeService {
     }
 
     @Cacheable("pokemon-types")
-    @Retryable
     @Override
     public PokemonType getPokemonType(int id) {
+        PokemonType pokeType;
+        pokeType = rT.getForObject(this.pokemonServiceUrl+this.base_url+"{id}", PokemonType.class, id);
+        return pokeType;
+    }
+
+    @Override
+    public PokemonType getPokemonId(int id) {
         var headers = new HttpHeaders();
         headers.setAcceptLanguageAsLocales(List.of(LocaleContextHolder.getLocale()));
         var httpRequest = new HttpEntity<>(headers);
-        PokemonType pokemonType;
-        pokemonType = rT.getForObject(this.pokemonServiceUrl+"/pokemon-types/{id}", PokemonType.class, id);
-        return pokemonType;
+        PokemonType pokeType;
+        pokeType = rT.getForObject(this.pokemonServiceUrl+this.base_url+id, PokemonType.class, httpRequest);
+        return pokeType;
+    }
+
+    @Override
+    public List<PokemonType> getVoidListPokemons(){
+        List<PokemonType> listPT = new ArrayList<>();
+        return listPT;
     }
 }

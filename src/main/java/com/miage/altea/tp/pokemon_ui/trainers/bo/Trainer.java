@@ -1,6 +1,6 @@
 package com.miage.altea.tp.pokemon_ui.trainers.bo;
 
-import com.miage.altea.tp.pokemon_ui.pokemonTypes.bo.Pokemon;
+import com.miage.altea.tp.pokemon_ui.pokemonTypes.bo.PokemonType;
 
 import java.util.List;
 
@@ -11,6 +11,8 @@ public class Trainer {
     private String password;
 
     private List<Pokemon> team;
+
+    private List<PokemonType> listPokemonType;
 
     public Trainer() {
     }
@@ -36,12 +38,15 @@ public class Trainer {
     }
 
     public String getPassword() {
-        System.out.println(this.password);
         return this.password;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public List<PokemonType> getListPokemonType(){return this.listPokemonType;}
+
+    public void setListPokemonType(List<PokemonType> listPokemonType) { this.listPokemonType = listPokemonType;}
 
 }

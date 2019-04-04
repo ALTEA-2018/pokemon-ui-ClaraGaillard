@@ -1,9 +1,9 @@
 package com.miage.altea.tp.pokemon_ui.config;
 
+import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.retry.annotation.EnableRetry;
 
+@EnableZuulProxy
 @Configuration
-@EnableRetry
-public class RetryConfiguration {
+public class RouterConfig {
 }

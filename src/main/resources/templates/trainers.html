@@ -1,17 +1,17 @@
 {{> layout/header}}
-
 <body>
 {{> navbar}}
 <div class="container">
-    <h1 class="pt-md-5 pb-md-5">Pokedex</h1>
+    <h1 class="pt-md-5 pb-md-5">Trainer</h1>
 
     <div class="card-deck">
-        {{#pokemonTypes}}
+        {{#trainers}}
         <div class="col-md-3">
             <div class="card shadow-sm mb-3">
                 <div class="card-header">
-                    <h4 class="my-0 font-weight-normal">{{name}} <!--2--><span class="badge badge-secondary">Id {{id}} <!--3--></span></h4>
+                    <h4 class="my-0 font-weight-normal">{{name}}</h4>
                 </div>
+                {{#listPk}}
                 <div id="pokemonCarouselControls{{id}}" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner">
                         <div class="carousel-item active">
@@ -30,24 +30,17 @@
                         <span class="sr-only">Next</span>
                     </a>
                 </div>
-
-                <div class="card-body">
-                    <span class="badge badge-primary">Speed : {{stats.speed}}</span>
-                    <span class="badge badge-primary">Attack : {{stats.attack}}</span>
-                    <span class="badge badge-primary">Defense : {{stats.defense}}</span>
-                    <span class="badge badge-primary">HP : {{stats.hp}}</span>
-                </div>
-                <div class="card-footer">
-                    Types :
-                    <div>
-                        {{#types}}
-                        <span class="badge badge-primary">{{.}}</span>
-                        {{/types}}
-                    </div>
-                </div>
+                <li>
+                    <ul>{{name}}</ul>
+                </li>
+                {{/listPk}}
+                <a class="nav-link" href="/fight/{{name}}">
+                    <h3>Attaquez !</h3>
+                </a>
             </div>
+
         </div>
-        {{/pokemonTypes}}
+        {{/trainers}}
     </div>
 
 </div>

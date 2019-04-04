@@ -1,7 +1,6 @@
-package com.miage.altea.tp.pokemon_ui.pokemonTypes.bo;
+package com.miage.altea.tp.pokemon_ui.trainers.bo;
 
 public class Pokemon {
-
     private int id;
 
     private int pokemonType;

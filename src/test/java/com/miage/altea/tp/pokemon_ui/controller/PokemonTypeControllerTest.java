@@ -42,5 +42,4 @@ class PokemonTypeControllerTest {
         assertArrayEquals(new String[]{"/pokedex"}, getMapping.value());
     }
 
-
 }

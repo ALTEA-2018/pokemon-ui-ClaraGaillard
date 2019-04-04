@@ -1,6 +1,5 @@
 package com.miage.altea.tp.pokemon_ui.controller;
 
-import com.miage.altea.tp.pokemon_ui.controller.IndexController;
 import org.junit.jupiter.api.Test;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +30,6 @@ class IndexControllerTest {
         assertNotNull(getMapping);
         assertArrayEquals(new String[]{"/"}, getMapping.value());
     }
-
     @Test
     void registerNewTrainer_shouldReturnAModelAndView(){
         var indexController = new IndexController();
@@ -50,4 +48,5 @@ class IndexControllerTest {
         assertNotNull(getMapping);
         assertArrayEquals(new String[]{"/registerTrainer"}, getMapping.value());
     }
+
 }

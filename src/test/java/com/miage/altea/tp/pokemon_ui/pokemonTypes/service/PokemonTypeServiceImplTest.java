@@ -15,52 +15,19 @@ import org.springframework.web.client.RestTemplate;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+import com.miage.altea.tp.pokemon_ui.pokemonTypes.bo.PokemonType;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 class PokemonTypeServiceImplTest {
 
-    @Autowired
-    PokemonTypeServiceImpl pokemonTypeService;
-
-    @Mock
-    RestTemplate restTemplate;
-
-    @Value("${pokemonType.service.url}/pokemon-types/{id}")
-    String expectedUrl;
-
-    @Autowired
-    CacheManager cacheManager;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.initMocks(this);
-        pokemonTypeService.setRestTemplate(restTemplate);
-
-        var pikachu = new PokemonType();
-        pikachu.setId(25);
-        pikachu.setName("Pikachu");
-        when(restTemplate.getForObject(expectedUrl, PokemonType.class, 25)).thenReturn(pikachu);
-    }
-
     @Test
-    void getPokemonType_shouldUseCache() {
-        pokemonTypeService.getPokemonType(25);
-
-        // rest template should have been called once
-        verify(restTemplate).getForObject(expectedUrl, PokemonType.class, 25);
-
-        pokemonTypeService.getPokemonType(25);
-
-        // rest template should not be called anymore because result is in cache !
-        verifyNoMoreInteractions(restTemplate);
-
-        // one result should be in cache !
-        var cachedValue = cacheManager.getCache("pokemon-types").get(25).get();
-        assertNotNull(cachedValue);
-        assertEquals(PokemonType.class, cachedValue.getClass());
-        assertEquals("Pikachu", ((PokemonType)cachedValue).getName());
-    }
-
-    /*@Test
     void listPokemonsTypes_shouldCallTheRemoteService() {
         var url = "http://localhost:8080";
 
@@ -73,7 +40,7 @@ class PokemonTypeServiceImplTest {
         pikachu.setName("pikachu");
         pikachu.setId(25);
 
-        var expectedUrl = "http://localhost:8080/pokemon-types";
+        var expectedUrl = "http://localhost:8080/pokemon-types/";
         when(restTemplate.getForObject(expectedUrl, PokemonType[].class)).thenReturn(new PokemonType[]{pikachu});
 
         var pokemons = pokemonServiceImpl.listPokemonsTypes();
@@ -82,7 +49,7 @@ class PokemonTypeServiceImplTest {
         assertEquals(1, pokemons.size());
 
         verify(restTemplate).getForObject(expectedUrl, PokemonType[].class);
-    }*/
+    }
 
     @Test
     void pokemonServiceImpl_shouldBeAnnotatedWithService(){

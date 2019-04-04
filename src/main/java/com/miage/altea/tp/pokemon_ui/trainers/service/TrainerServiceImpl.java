@@ -4,6 +4,7 @@ import com.miage.altea.tp.pokemon_ui.trainers.bo.Trainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -24,6 +25,7 @@ public class TrainerServiceImpl implements TrainerService{
     RestTemplate restTemplate;
 
     @Override
+    @Cacheable(value = "trainers")
     public List<Trainer> listTrainers() {
         var headers = new HttpHeaders();
         headers.setAcceptLanguageAsLocales(List.of(LocaleContextHolder.getLocale()));
@@ -35,13 +37,14 @@ public class TrainerServiceImpl implements TrainerService{
     }
 
     @Autowired
+    @Override
     @Qualifier("trainerApiRestTemplate")
     public void setRestTemplate(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
     @Override
-    @Value("${urlTrainerService}")
+    @Value("${trainer.service.url}")
     public void setTrainerServiceUrl(String trainerServiceUrl) {
         this.trainerServiceUrl= trainerServiceUrl;
     }
@@ -49,11 +52,8 @@ public class TrainerServiceImpl implements TrainerService{
     @Override
     public Trainer getTrainer(String name) {
 
-        var headers = new HttpHeaders();
-        headers.setAcceptLanguageAsLocales(List.of(LocaleContextHolder.getLocale()));
-        var httpRequest = new HttpEntity<>(headers);
         Trainer trainer;
-        trainer = restTemplate.getForObject(trainerServiceUrl+"/trainers/{name}", Trainer.class, name);
+        trainer = restTemplate.getForObject(this.trainerServiceUrl+this.base_url+"{name}", Trainer.class, name);
         return trainer;
 
     }

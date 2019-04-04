@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.support.BasicAuthenticationInterceptor;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
+
 @Configuration
 public class RestConfiguration {
 
@@ -22,9 +24,10 @@ public class RestConfiguration {
 
     @Bean
     RestTemplate trainerApiRestTemplate(){
-        RestTemplate trainerApiRestTemplate = new RestTemplate();
-        trainerApiRestTemplate.getInterceptors().add(new BasicAuthenticationInterceptor(this.username, this.password));
-        return trainerApiRestTemplate;
+        BasicAuthenticationInterceptor basicAuthInt = new BasicAuthenticationInterceptor(username, password);
+        RestTemplate rest = new RestTemplate();
+        rest.setInterceptors(Arrays.asList(basicAuthInt));
+        return rest;
     }
 
 }
